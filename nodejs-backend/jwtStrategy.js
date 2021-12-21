@@ -6,15 +6,15 @@ const ExtractJwt=passportJWT.ExtractJwt
 
 const jwtStrategy=new passportJWT.Strategy(
     {
-      secretOrKey: process.env.JWT_SECRET,
+      secretOrKey: process.env.JWT_SECRET||'secret',
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     },
-    async (payload, done) => {
-      let {userList} = await fs.readFileSync(path.join(__dirname,'fakedb.json'));
+     (payload, done) => {
+      let {userList} =  fs.readFileSync(path.join(__dirname,'fakedb.json'));
 
       if (userList.filter(item=>item.login==='') > 0) {
         let user = matchedUser[0];
-        return done(null, { id: user.id });
+        return done(null, user);
       } else {
         return done(new Error("User not found"), null);
       }

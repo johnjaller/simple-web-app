@@ -31,7 +31,7 @@ app.post("/sortnum", (req, res) => {
 });
 app.post("/login",passport.authenticate('signin',{session:false}), (req, res) => {
   console.log(req.user)
-  const token = jwt.sign(req.user,process.env.JWT_SECRET )
+  const token = jwt.sign(req.user,process.env.JWT_SECRET||"secret" )
   res.json(token)
 });
 //port forwarding
